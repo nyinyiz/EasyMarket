@@ -51,8 +51,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -76,7 +74,11 @@ fun OrderSummaryScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val statusBarPadding = WindowInsets.statusBars.asPaddingValues()
-    var showConfirmDialog by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(false) }
+    var showConfirmDialog by androidx.compose.runtime.remember {
+        androidx.compose.runtime.mutableStateOf(
+            false,
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -286,7 +288,10 @@ fun CartItemCard(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     IconButton(onClick = onDecrease, enabled = cartItem.quantity > 1) {
-                        Icon(imageVector = Icons.Filled.Remove, contentDescription = "Decrease quantity")
+                        Icon(
+                            imageVector = Icons.Filled.Remove,
+                            contentDescription = "Decrease quantity",
+                        )
                     }
                     Text(
                         text = cartItem.quantity.toInt().toString(),
@@ -295,7 +300,10 @@ fun CartItemCard(
                         color = MaterialTheme.colorScheme.primary,
                     )
                     IconButton(onClick = onIncrease) {
-                        Icon(imageVector = Icons.Filled.Add, contentDescription = "Increase quantity")
+                        Icon(
+                            imageVector = Icons.Filled.Add,
+                            contentDescription = "Increase quantity",
+                        )
                     }
                 }
             }
@@ -552,12 +560,23 @@ fun ConfirmOrderDialog(
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     Text(text = "Total", fontWeight = FontWeight.Bold)
-                    Text(text = "$$totalPrice", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                    Text(
+                        text = "$$totalPrice",
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary,
+                    )
                 }
                 Divider()
                 // Address
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Icon(imageVector = Icons.Filled.LocationOn, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.LocationOn,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                    )
                     Text(text = deliveryAddress)
                 }
             }
