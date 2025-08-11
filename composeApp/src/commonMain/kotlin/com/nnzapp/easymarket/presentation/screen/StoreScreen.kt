@@ -110,15 +110,16 @@ fun StoreScreen(
             } else {
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
-                    modifier = Modifier
-                        .fillMaxSize(),
+                    modifier =
+                        Modifier
+                            .fillMaxSize(),
                     contentPadding = PaddingValues(horizontal = 16.dp, vertical = 24.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
                     items(
                         items = uiState.products,
-                        key = { product -> product.name }
+                        key = { product -> product.name },
                     ) { product ->
                         ProductItem(
                             product = product,
@@ -133,7 +134,6 @@ fun StoreScreen(
                     }
                 }
             }
-
 
             uiState.errorMessage?.let { message ->
                 ErrorOverlay(
@@ -181,7 +181,7 @@ fun StoreTopAppBar(
                 modifier =
                     Modifier
                         .padding(top = statusBarPadding.calculateTopPadding())
-                        .padding(horizontal = 24.dp, vertical = 16.dp)
+                        .padding(horizontal = 24.dp, vertical = 16.dp),
             ) {
                 Text(
                     text = store.name,
@@ -248,29 +248,30 @@ fun ProductItem(
                     loading = {
                         Box(
                             modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
+                            contentAlignment = Alignment.Center,
                         ) {
                             CircularProgressIndicator(
                                 modifier = Modifier.size(32.dp),
-                                color = MaterialTheme.colorScheme.primary
+                                color = MaterialTheme.colorScheme.primary,
                             )
                         }
                     },
                     error = {
                         Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(MaterialTheme.colorScheme.surfaceVariant),
-                            contentAlignment = Alignment.Center
+                            modifier =
+                                Modifier
+                                    .fillMaxSize()
+                                    .background(MaterialTheme.colorScheme.surfaceVariant),
+                            contentAlignment = Alignment.Center,
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Image,
                                 contentDescription = "Failed to load image",
                                 modifier = Modifier.size(48.dp),
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
                             )
                         }
-                    }
+                    },
                 )
             }
 
@@ -308,8 +309,8 @@ fun ProductItem(
                     targetState = quantity > 0,
                     transitionSpec = {
                         fadeIn(animationSpec = spring(stiffness = 300f)) togetherWith
-                                fadeOut(animationSpec = spring(stiffness = 300f)) using
-                                SizeTransform(clip = false)
+                            fadeOut(animationSpec = spring(stiffness = 300f)) using
+                            SizeTransform(clip = false)
                     },
                     label = "AddButtonStepper",
                 ) { hasQuantity ->
@@ -385,7 +386,6 @@ fun CartFab(
             Row(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-
                 AnimatedContent(targetState = itemCount, label = "fab-item-count") { count ->
                     Text(
                         text = "$count item${if (count > 1) "s" else ""}",
@@ -406,7 +406,6 @@ fun CartFab(
         },
     )
 }
-
 
 @Composable
 fun InfoChip(
