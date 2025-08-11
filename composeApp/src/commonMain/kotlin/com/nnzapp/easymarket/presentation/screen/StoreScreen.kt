@@ -67,13 +67,12 @@ import coil3.compose.SubcomposeAsyncImage
 import com.nnzapp.easymarket.domain.model.Product
 import com.nnzapp.easymarket.domain.model.Store
 import com.nnzapp.easymarket.presentation.viewmodel.StoreViewModel
-import org.koin.compose.koinInject
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StoreScreen(
     onNavigateToOrderSummary: () -> Unit,
-    viewModel: StoreViewModel = koinInject(),
+    viewModel: StoreViewModel,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -379,8 +378,8 @@ fun CartFab(
     ExtendedFloatingActionButton(
         onClick = onClick,
         modifier = modifier,
-        containerColor = MaterialTheme.colorScheme.primary,
-        contentColor = MaterialTheme.colorScheme.onPrimary,
+        containerColor = MaterialTheme.colorScheme.secondary,
+        contentColor = MaterialTheme.colorScheme.onSecondary,
         icon = { Icon(Icons.Default.ShoppingCart, contentDescription = "Cart") },
         text = {
             Row(
