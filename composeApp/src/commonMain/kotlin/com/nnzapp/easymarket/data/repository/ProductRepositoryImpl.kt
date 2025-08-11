@@ -5,13 +5,14 @@ import com.nnzapp.easymarket.data.remote.ApiService
 import com.nnzapp.easymarket.domain.model.Product
 import com.nnzapp.easymarket.domain.repository.ProductRepository
 
-class ProductRepositoryImpl(private val apiService: ApiService) : ProductRepository {
-    override suspend fun getProducts(): Result<List<Product>> {
-        return try {
+class ProductRepositoryImpl(
+    private val apiService: ApiService,
+) : ProductRepository {
+    override suspend fun getProducts(): Result<List<Product>> =
+        try {
             val productsDto = apiService.getProducts()
             Result.success(productsDto.map { it.toDomain() })
         } catch (e: Exception) {
             Result.failure(e)
         }
-    }
 }

@@ -9,19 +9,20 @@ import io.ktor.client.plugins.logging.SIMPLE
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
-fun createHttpClient(): HttpClient {
-    return HttpClient {
+fun createHttpClient(): HttpClient =
+    HttpClient {
         install(ContentNegotiation) {
-            json(Json {
-                prettyPrint = true
-                isLenient = true
-                ignoreUnknownKeys = true
-            })
+            json(
+                Json {
+                    prettyPrint = true
+                    isLenient = true
+                    ignoreUnknownKeys = true
+                },
+            )
         }
-        
+
         install(Logging) {
             logger = Logger.SIMPLE
             level = LogLevel.ALL
         }
     }
-}

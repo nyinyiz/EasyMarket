@@ -3,18 +3,16 @@ package com.nnzapp.easymarket.data.mapper
 import com.nnzapp.easymarket.data.model.ProductDto
 import com.nnzapp.easymarket.domain.model.Product
 
-fun ProductDto.toDomain(): Product {
-    return Product(
+fun ProductDto.toDomain(): Product =
+    Product(
         name = name,
         price = price,
-        imageUrl = imageUrl
+        imageUrl = imageUrl,
     )
-}
 
-fun Product.toDto(): ProductDto {
-    return ProductDto(
+fun Product.toDto(): ProductDto =
+    ProductDto(
         name = name,
         price = price,
-        imageUrl = imageUrl
+        imageUrl = imageUrl,
     )
-}
