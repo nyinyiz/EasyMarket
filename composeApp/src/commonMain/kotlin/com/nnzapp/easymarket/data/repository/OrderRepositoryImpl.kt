@@ -1,5 +1,6 @@
 package com.nnzapp.easymarket.data.repository
 
+import com.nnzapp.easymarket.data.error.toAppException
 import com.nnzapp.easymarket.data.mapper.toDto
 import com.nnzapp.easymarket.data.remote.ApiService
 import com.nnzapp.easymarket.domain.model.Order
@@ -12,7 +13,7 @@ class OrderRepositoryImpl(
         try {
             val success = apiService.placeOrder(order.toDto())
             Result.success(success)
-        } catch (e: Exception) {
-            Result.failure(e)
+        } catch (t: Throwable) {
+            Result.failure(t.toAppException())
         }
 }

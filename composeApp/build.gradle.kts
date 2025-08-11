@@ -36,6 +36,7 @@ kotlin {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.android)
+            implementation("io.coil-kt.coil3:coil-network-okhttp:3.3.0")
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -68,7 +69,6 @@ kotlin {
             implementation(compose.materialIconsExtended)
 
             implementation("io.coil-kt.coil3:coil-compose:3.3.0")
-            implementation("io.coil-kt.coil3:coil-network-okhttp:3.3.0")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -77,6 +77,7 @@ kotlin {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
             implementation(libs.ktor.client.java)
+            implementation("io.coil-kt.coil3:coil-network-okhttp:3.3.0")
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)

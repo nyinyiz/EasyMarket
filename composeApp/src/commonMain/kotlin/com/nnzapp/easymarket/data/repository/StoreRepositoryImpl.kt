@@ -1,5 +1,6 @@
 package com.nnzapp.easymarket.data.repository
 
+import com.nnzapp.easymarket.data.error.toAppException
 import com.nnzapp.easymarket.data.mapper.toDomain
 import com.nnzapp.easymarket.data.remote.ApiService
 import com.nnzapp.easymarket.domain.model.Store
@@ -12,7 +13,7 @@ class StoreRepositoryImpl(
         try {
             val storeDto = apiService.getStoreInfo()
             Result.success(storeDto.toDomain())
-        } catch (e: Exception) {
-            Result.failure(e)
+        } catch (t: Throwable) {
+            Result.failure(t.toAppException())
         }
 }
