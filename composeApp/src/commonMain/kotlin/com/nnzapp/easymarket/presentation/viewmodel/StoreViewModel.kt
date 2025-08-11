@@ -7,10 +7,18 @@ import com.nnzapp.easymarket.domain.model.Product
 import com.nnzapp.easymarket.domain.model.Store
 import com.nnzapp.easymarket.domain.usecase.GetProductsUseCase
 import com.nnzapp.easymarket.domain.usecase.GetStoreInfoUseCase
+import com.nnzapp.easymarket.domain.usecase.PlaceOrderUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+
+data class LastOrderInfo(
+    val itemCount: Int,
+    val totalAmount: Double,
+    val deliveryAddress: String,
+    val placedAtMillis: Long,
+)
 
 data class StoreUiState(
     val isLoading: Boolean = false,
@@ -18,6 +26,12 @@ data class StoreUiState(
     val products: List<Product> = emptyList(),
     val cartItems: List<CartItem> = emptyList(),
     val errorMessage: String? = null,
+    // Order-related UI state
+    val deliveryAddress: String = "",
+    val isPlacingOrder: Boolean = false,
+    val orderErrorMessage: String? = null,
+    // Last order summary info to show on Success screen
+    val lastOrderInfo: LastOrderInfo? = null,
 ) {
     val totalCartItems: Double get() = cartItems.sumOf { it.quantity }
     val totalPrice: Double get() = cartItems.sumOf { it.totalPrice }
@@ -26,6 +40,7 @@ data class StoreUiState(
 class StoreViewModel(
     private val getStoreInfoUseCase: GetStoreInfoUseCase,
     private val getProductsUseCase: GetProductsUseCase,
+    private val placeOrderUseCase: PlaceOrderUseCase,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(StoreUiState())
     val uiState: StateFlow<StoreUiState> = _uiState.asStateFlow()
@@ -108,6 +123,11 @@ class StoreViewModel(
         _uiState.value = _uiState.value.copy(cartItems = currentItems)
     }
 
+    fun removeItemFromCart(product: Product) {
+        val updated = _uiState.value.cartItems.filterNot { it.product.name == product.name }
+        _uiState.value = _uiState.value.copy(cartItems = updated)
+    }
+
     fun getProductQuantity(product: Product): Double =
         _uiState.value.cartItems
             .find { it.product.name == product.name }
@@ -119,5 +139,47 @@ class StoreViewModel(
 
     fun refreshData() {
         loadStoreData()
+    }
+
+    fun clearCart() {
+        _uiState.value = _uiState.value.copy(cartItems = emptyList())
+    }
+
+    // Order-related actions
+    fun setAddress(address: String) {
+        _uiState.value = _uiState.value.copy(deliveryAddress = address)
+    }
+
+    fun clearOrderError() {
+        _uiState.value = _uiState.value.copy(orderErrorMessage = null)
+    }
+
+    fun placeOrder(onSuccess: () -> Unit) {
+        val currentState = _uiState.value
+        if (currentState.isPlacingOrder) return
+        _uiState.value = currentState.copy(isPlacingOrder = true, orderErrorMessage = null)
+
+        viewModelScope.launch {
+            try {
+                val success = placeOrderUseCase(currentState.cartItems, currentState.deliveryAddress)
+                if (success) {
+                    val summary =
+                        LastOrderInfo(
+                            itemCount = currentState.totalCartItems.toInt(),
+                            totalAmount = currentState.totalPrice,
+                            deliveryAddress = currentState.deliveryAddress,
+                            placedAtMillis = 0L, // Timestamp not available in common module without extra deps
+                        )
+                    _uiState.value = _uiState.value.copy(lastOrderInfo = summary)
+                    onSuccess()
+                } else {
+                    _uiState.value = _uiState.value.copy(orderErrorMessage = "Failed to place order. Please try again.")
+                }
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(orderErrorMessage = e.message ?: "Failed to place order. Please try again.")
+            } finally {
+                _uiState.value = _uiState.value.copy(isPlacingOrder = false)
+            }
+        }
     }
 }
