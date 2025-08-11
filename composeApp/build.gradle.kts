@@ -7,7 +7,6 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.composeHotReload)
     alias(libs.plugins.kotlinSerialization)
 }
 
@@ -63,12 +62,13 @@ kotlin {
             implementation(libs.koin.composeVM)
 
             // Navigation
-            implementation(libs.androidx.navigation.compose)
+            implementation("org.jetbrains.androidx.navigation:navigation-compose:2.9.0-beta04")
 
             // Material Icons Extended
             implementation(compose.materialIconsExtended)
 
             implementation("io.coil-kt.coil3:coil-compose:3.3.0")
+            implementation("io.coil-kt.coil3:coil-network-okhttp:3.3.0")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
