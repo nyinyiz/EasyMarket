@@ -7,5 +7,5 @@ data class StoreDto(
     val name: String,
     val rating: Double,
     val openingTime: String,
-    val closingTime: String
+    val closingTime: String,
 )

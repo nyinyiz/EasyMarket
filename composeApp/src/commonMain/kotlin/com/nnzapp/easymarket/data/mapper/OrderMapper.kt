@@ -5,15 +5,15 @@ import com.nnzapp.easymarket.domain.model.Order
 
 fun Order.toDto(): OrderRequestDto {
     val products = mutableListOf<com.nnzapp.easymarket.data.model.ProductDto>()
-    
+
     items.forEach { cartItem ->
-        repeat(cartItem.quantity) {
+        repeat(cartItem.quantity.toInt()) {
             products.add(cartItem.product.toDto())
         }
     }
-    
+
     return OrderRequestDto(
         products = products,
-        deliveryAddress = deliveryAddress
+        deliveryAddress = deliveryAddress,
     )
 }

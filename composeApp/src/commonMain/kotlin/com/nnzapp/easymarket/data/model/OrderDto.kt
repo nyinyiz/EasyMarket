@@ -7,5 +7,5 @@ import kotlinx.serialization.Serializable
 data class OrderRequestDto(
     val products: List<ProductDto>,
     @SerialName("delivery_address")
-    val deliveryAddress: String
+    val deliveryAddress: String,
 )
