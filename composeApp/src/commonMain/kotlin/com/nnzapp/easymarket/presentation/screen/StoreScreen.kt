@@ -118,7 +118,7 @@ fun StoreScreen(
                 ) {
                     items(
                         items = uiState.products,
-                        key = { product -> product.name },
+                        key = { product -> product.id },
                     ) { product ->
                         ProductItem(
                             product = product,

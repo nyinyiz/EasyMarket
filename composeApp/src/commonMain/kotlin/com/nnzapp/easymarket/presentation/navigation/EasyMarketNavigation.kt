@@ -6,6 +6,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.nnzapp.easymarket.data.config.ApiConfig
+import com.nnzapp.easymarket.presentation.screen.ConfigScreen
 import com.nnzapp.easymarket.presentation.screen.OrderSummaryScreen
 import com.nnzapp.easymarket.presentation.screen.StoreScreen
 import com.nnzapp.easymarket.presentation.screen.SuccessScreen
@@ -16,8 +18,23 @@ import org.koin.compose.viewmodel.koinViewModel
 fun EasyMarketNavigation(navController: NavHostController = rememberNavController()) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Store.route,
+        startDestination = Screen.Config.route,
     ) {
+        composable(Screen.Config.route) {
+            ConfigScreen(
+                onConfigSelected = { useMockApi, apiUrl ->
+                    ApiConfig.useMockApi = useMockApi
+                    if (!useMockApi && apiUrl.isNotEmpty()) {
+                        ApiConfig.baseUrl = apiUrl
+                    }
+                    navController.navigate(Screen.Store.route) {
+                        popUpTo(Screen.Config.route) {
+                            inclusive = true
+                        }
+                    }
+                },
+            )
+        }
         composable(Screen.Store.route) {
             val storeOwner = remember(navController) { navController.getBackStackEntry(Screen.Store.route) }
             val storeViewModel: StoreViewModel = koinViewModel(viewModelStoreOwner = storeOwner)

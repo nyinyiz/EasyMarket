@@ -1,5 +1,6 @@
 package com.nnzapp.easymarket.data.remote
 
+import com.nnzapp.easymarket.data.config.ApiConfig
 import com.nnzapp.easymarket.data.error.AppException
 import com.nnzapp.easymarket.data.error.toAppException
 import com.nnzapp.easymarket.data.model.OrderRequestDto
@@ -20,20 +21,19 @@ import io.ktor.http.contentType
 class ApiServiceImpl(
     private val httpClient: HttpClient,
 ) : ApiService {
-    companion object {
-        private const val BASE_URL = "https://mobile-coding-challenge-api-5.free.beeceptor.com"
-    }
+    private val baseUrl: String
+        get() = ApiConfig.baseUrl.ifEmpty { "https://mobile-coding-challenge-api-5.free.beeceptor.com" }
 
     override suspend fun getStoreInfo(): StoreDto =
         try {
-            httpClient.get("$BASE_URL/storeInfo").body()
+            httpClient.get("$baseUrl/storeInfo").body()
         } catch (t: Throwable) {
             throw t.toAppException()
         }
 
     override suspend fun getProducts(): List<ProductDto> =
         try {
-            val response: ProductResponseDto = httpClient.get("$BASE_URL/products").body()
+            val response: ProductResponseDto = httpClient.get("$baseUrl/products").body()
             response.data.ProductResult.Products
         } catch (t: Throwable) {
             throw t.toAppException()
@@ -42,7 +42,7 @@ class ApiServiceImpl(
     override suspend fun placeOrder(orderRequest: OrderRequestDto): Boolean =
         try {
             val response =
-                httpClient.post("$BASE_URL/order") {
+                httpClient.post("$baseUrl/order") {
                     contentType(ContentType.Application.Json)
                     setBody(orderRequest)
                 }
