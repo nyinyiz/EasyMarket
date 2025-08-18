@@ -218,12 +218,12 @@ fun ConfigScreen(onConfigSelected: (Boolean, String) -> Unit) {
                                         Column {
                                             Text(
                                                 text = route.name,
-                                                style = MaterialTheme.typography.bodySmall,
+                                                style = MaterialTheme.typography.titleSmall,
                                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                             )
                                             Text(
                                                 text = route.url,
-                                                style = MaterialTheme.typography.titleSmall,
+                                                style = MaterialTheme.typography.bodySmall,
                                                 color = Color.Blue,
                                             )
                                         }
