@@ -49,7 +49,6 @@ fun SuccessScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        // Success Icon
         Box(
             modifier =
                 Modifier

@@ -22,7 +22,8 @@ class ProductRepositoryImplTest {
                 return productsToReturn
             }
 
-            override suspend fun getStoreInfo(): com.nnzapp.easymarket.data.model.StoreDto = throw NotImplementedError()
+            override suspend fun getStoreInfo(): com.nnzapp.easymarket.data.model.StoreDto =
+                throw NotImplementedError()
 
             override suspend fun placeOrder(orderRequest: com.nnzapp.easymarket.data.model.OrderRequestDto): Boolean =
                 throw NotImplementedError()
@@ -36,8 +37,8 @@ class ProductRepositoryImplTest {
             // Given
             val expectedProductsDto =
                 listOf(
-                    ProductDto(name = "Product 1", price = 100, imageUrl = "image1.jpg"),
-                    ProductDto(name = "Product 2", price = 200, imageUrl = "image2.jpg"),
+                    ProductDto(id = "1", name = "Product 1", price = 100, imageUrl = "image1.jpg"),
+                    ProductDto(id = "2", name = "Product 2", price = 200, imageUrl = "image2.jpg"),
                 )
             mockApiService.productsToReturn = expectedProductsDto
             mockApiService.shouldThrowException = false
@@ -96,6 +97,7 @@ class ProductRepositoryImplTest {
             // Given
             val productDto =
                 ProductDto(
+                    id= "1",
                     name = "Test Product",
                     price = 150,
                     imageUrl = "test.jpg",

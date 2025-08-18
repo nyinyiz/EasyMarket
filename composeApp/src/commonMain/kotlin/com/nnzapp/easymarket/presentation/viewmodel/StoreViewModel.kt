@@ -168,7 +168,7 @@ class StoreViewModel(
                             itemCount = currentState.totalCartItems.toInt(),
                             totalAmount = currentState.totalPrice,
                             deliveryAddress = currentState.deliveryAddress,
-                            placedAtMillis = 0L, // Timestamp not available in common module without extra deps
+                            placedAtMillis = 0L,
                         )
                     _uiState.value = _uiState.value.copy(lastOrderInfo = summary)
                     onSuccess()

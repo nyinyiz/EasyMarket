@@ -97,7 +97,6 @@ fun ConfigScreen(onConfigSelected: (Boolean, String) -> Unit) {
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                // Live API Option
                 Row(
                     modifier =
                         Modifier
@@ -127,7 +126,6 @@ fun ConfigScreen(onConfigSelected: (Boolean, String) -> Unit) {
                     }
                 }
 
-                // Mock API Option
                 Row(
                     modifier =
                         Modifier
@@ -168,7 +166,6 @@ fun ConfigScreen(onConfigSelected: (Boolean, String) -> Unit) {
 
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    // Predefined routes dropdown
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),

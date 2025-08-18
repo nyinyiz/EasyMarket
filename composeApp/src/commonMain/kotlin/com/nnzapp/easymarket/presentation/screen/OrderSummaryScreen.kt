@@ -149,7 +149,6 @@ fun OrderSummaryScreen(
                 }
 
                 item {
-                    // Show any error related to placing order
                     uiState.orderErrorMessage?.let { msg ->
                         Text(
                             text = msg,
@@ -264,7 +263,6 @@ fun CartItemCard(
                 )
             }
 
-            // Product Details
             Column(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(4.dp),
@@ -541,7 +539,7 @@ fun ConfirmOrderDialog(
         },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                // Items list
+
                 Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     items.forEach { item ->
                         Row(
@@ -567,7 +565,6 @@ fun ConfirmOrderDialog(
                     )
                 }
                 Divider()
-                // Address
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalAlignment = Alignment.CenterVertically,
