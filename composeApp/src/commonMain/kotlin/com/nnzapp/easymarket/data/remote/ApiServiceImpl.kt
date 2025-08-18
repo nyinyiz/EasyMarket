@@ -4,6 +4,7 @@ import com.nnzapp.easymarket.data.error.AppException
 import com.nnzapp.easymarket.data.error.toAppException
 import com.nnzapp.easymarket.data.model.OrderRequestDto
 import com.nnzapp.easymarket.data.model.ProductDto
+import com.nnzapp.easymarket.data.model.ProductResponseDto
 import com.nnzapp.easymarket.data.model.StoreDto
 import com.nnzapp.easymarket.domain.error.AppError
 import io.ktor.client.HttpClient
@@ -20,7 +21,7 @@ class ApiServiceImpl(
     private val httpClient: HttpClient,
 ) : ApiService {
     companion object {
-        private const val BASE_URL = "https://c8d92d0a-6233-4ef7-a229-5a91deb91ea1.mock.pstmn.io"
+        private const val BASE_URL = "https://mobile-coding-challenge-api-5.free.beeceptor.com"
     }
 
     override suspend fun getStoreInfo(): StoreDto =
@@ -32,7 +33,8 @@ class ApiServiceImpl(
 
     override suspend fun getProducts(): List<ProductDto> =
         try {
-            httpClient.get("$BASE_URL/products").body()
+            val response: ProductResponseDto = httpClient.get("$BASE_URL/products").body()
+            response.data.ProductResult.Products
         } catch (t: Throwable) {
             throw t.toAppException()
         }

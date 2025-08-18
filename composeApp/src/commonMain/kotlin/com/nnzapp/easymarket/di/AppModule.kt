@@ -17,7 +17,7 @@ import com.nnzapp.easymarket.presentation.viewmodel.StoreViewModel
 import org.koin.compose.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-private const val USE_MOCK_API = true
+private const val USE_MOCK_API = false
 
 val appModule =
     module {

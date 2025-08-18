@@ -12,6 +12,7 @@ fun ProductDto.toDomain(): Product =
 
 fun Product.toDto(): ProductDto =
     ProductDto(
+        id = id,
         name = name,
         price = price,
         imageUrl = imageUrl,
