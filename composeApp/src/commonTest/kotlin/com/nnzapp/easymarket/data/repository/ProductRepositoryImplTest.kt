@@ -22,8 +22,7 @@ class ProductRepositoryImplTest {
                 return productsToReturn
             }
 
-            override suspend fun getStoreInfo(): com.nnzapp.easymarket.data.model.StoreDto =
-                throw NotImplementedError()
+            override suspend fun getStoreInfo(): com.nnzapp.easymarket.data.model.StoreDto = throw NotImplementedError()
 
             override suspend fun placeOrder(orderRequest: com.nnzapp.easymarket.data.model.OrderRequestDto): Boolean =
                 throw NotImplementedError()
@@ -97,7 +96,7 @@ class ProductRepositoryImplTest {
             // Given
             val productDto =
                 ProductDto(
-                    id= "1",
+                    id = "1",
                     name = "Test Product",
                     price = 150,
                     imageUrl = "test.jpg",

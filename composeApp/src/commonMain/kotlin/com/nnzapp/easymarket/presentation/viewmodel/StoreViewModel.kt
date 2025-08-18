@@ -25,7 +25,8 @@ data class StoreUiState(
     val store: Store? = null,
     val products: List<Product> = emptyList(),
     val cartItems: List<CartItem> = emptyList(),
-    val errorMessage: String? = null,
+    val storeErrorMessage: String? = null,
+    val productsErrorMessage: String? = null,
     // Order-related UI state
     val deliveryAddress: String = "",
     val isPlacingOrder: Boolean = false,
@@ -51,7 +52,7 @@ class StoreViewModel(
 
     private fun loadStoreData() {
         viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true, errorMessage = null)
+            _uiState.value = _uiState.value.copy(isLoading = true, storeErrorMessage = null, productsErrorMessage = null)
 
             try {
                 val storeResult = getStoreInfoUseCase()
@@ -65,7 +66,7 @@ class StoreViewModel(
                     },
                     onFailure = { error ->
                         newState =
-                            newState.copy(errorMessage = "Failed to load store info: ${error.message}")
+                            newState.copy(storeErrorMessage = "Failed to load store info: ${error.message}")
                     },
                 )
 
@@ -75,7 +76,7 @@ class StoreViewModel(
                     },
                     onFailure = { error ->
                         newState =
-                            newState.copy(errorMessage = "Failed to load products: ${error.message}")
+                            newState.copy(productsErrorMessage = "Failed to load products: ${error.message}")
                     },
                 )
 
@@ -84,7 +85,7 @@ class StoreViewModel(
                 _uiState.value =
                     _uiState.value.copy(
                         isLoading = false,
-                        errorMessage = "An unexpected error occurred: ${e.message}",
+                        storeErrorMessage = "An unexpected error occurred: ${e.message}",
                     )
             }
         }
@@ -133,8 +134,12 @@ class StoreViewModel(
             .find { it.product.name == product.name }
             ?.quantity ?: 0.0
 
-    fun clearError() {
-        _uiState.value = _uiState.value.copy(errorMessage = null)
+    fun clearStoreError() {
+        _uiState.value = _uiState.value.copy(storeErrorMessage = null)
+    }
+
+    fun clearProductsError() {
+        _uiState.value = _uiState.value.copy(productsErrorMessage = null)
     }
 
     fun refreshData() {

@@ -35,9 +35,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -60,6 +62,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -78,11 +81,14 @@ fun StoreScreen(
 
     Scaffold(
         topBar = {
-            uiState.store?.let { store ->
-                StoreTopAppBar(
-                    store = store,
-                )
-            }
+            StoreTopAppBar(
+                store = uiState.store,
+                errorMessage = uiState.storeErrorMessage,
+                onRetryClick = {
+                    viewModel.clearStoreError()
+                    viewModel.refreshData()
+                },
+            )
         },
         floatingActionButton = {
             AnimatedVisibility(
@@ -116,6 +122,18 @@ fun StoreScreen(
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
+                    uiState.productsErrorMessage?.let { errorMessage ->
+                        item(span = { GridItemSpan(2) }) {
+                            ProductsErrorCard(
+                                message = errorMessage,
+                                onRetryClick = {
+                                    viewModel.clearProductsError()
+                                    viewModel.refreshData()
+                                },
+                            )
+                        }
+                    }
+
                     items(
                         items = uiState.products,
                         key = { product -> product.id },
@@ -133,16 +151,6 @@ fun StoreScreen(
                     }
                 }
             }
-
-            uiState.errorMessage?.let { message ->
-                ErrorOverlay(
-                    message = message,
-                    onRetry = {
-                        viewModel.clearError()
-                        viewModel.refreshData()
-                    },
-                )
-            }
         }
     }
 }
@@ -150,8 +158,10 @@ fun StoreScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StoreTopAppBar(
-    store: Store,
+    store: Store?,
     modifier: Modifier = Modifier,
+    errorMessage: String? = null,
+    onRetryClick: () -> Unit = {},
 ) {
     val statusBarPadding = WindowInsets.statusBars.asPaddingValues()
 
@@ -182,30 +192,80 @@ fun StoreTopAppBar(
                         .padding(top = statusBarPadding.calculateTopPadding())
                         .padding(horizontal = 24.dp, vertical = 16.dp),
             ) {
-                Text(
-                    text = store.name,
-                    style = MaterialTheme.typography.headlineLarge,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                Spacer(Modifier.height(8.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(24.dp),
-                ) {
-                    InfoChip(
-                        icon = Icons.Default.Star,
-                        text = "${store.rating} Rating",
-                        iconTint = Color(0xFFFFC107),
+                errorMessage?.let { message ->
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        colors =
+                            CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.errorContainer,
+                            ),
+                        shape = RoundedCornerShape(12.dp),
+                    ) {
+                        Row(
+                            modifier =
+                                Modifier
+                                    .fillMaxWidth()
+                                    .padding(12.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                        ) {
+                            Row(
+                                modifier = Modifier.weight(1f),
+                                verticalAlignment = Alignment.CenterVertically,
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Warning,
+                                    contentDescription = "Error",
+                                    tint = MaterialTheme.colorScheme.onErrorContainer,
+                                    modifier = Modifier.size(20.dp),
+                                )
+                                Spacer(Modifier.width(8.dp))
+                                Text(
+                                    text = message,
+                                    color = MaterialTheme.colorScheme.onErrorContainer,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    maxLines = 2,
+                                    overflow = TextOverflow.Ellipsis,
+                                )
+                            }
+                            IconButton(onClick = onRetryClick) {
+                                Icon(
+                                    imageVector = Icons.Default.Refresh,
+                                    contentDescription = "Retry",
+                                    tint = MaterialTheme.colorScheme.onErrorContainer,
+                                )
+                            }
+                        }
+                    }
+                    Spacer(Modifier.height(12.dp))
+                }
+
+                store?.let {
+                    Text(
+                        text = store.name,
+                        style = MaterialTheme.typography.headlineLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                     )
-                    InfoChip(
-                        icon = Icons.Default.AccessTime,
-                        text = "${store.openingTime} - ${store.closingTime}",
-                        iconTint = MaterialTheme.colorScheme.primary,
-                    )
+                    Spacer(Modifier.height(8.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(24.dp),
+                    ) {
+                        InfoChip(
+                            icon = Icons.Default.Star,
+                            text = "${store.rating} Rating",
+                            iconTint = Color(0xFFFFC107),
+                        )
+                        InfoChip(
+                            icon = Icons.Default.AccessTime,
+                            text = "${store.openingTime} - ${store.closingTime}",
+                            iconTint = MaterialTheme.colorScheme.primary,
+                        )
+                    }
                 }
             }
         }
@@ -425,5 +485,67 @@ fun InfoChip(
             style = MaterialTheme.typography.labelLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
+    }
+}
+
+@Composable
+fun ProductsErrorCard(
+    message: String,
+    onRetryClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        colors =
+            CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.errorContainer,
+            ),
+        shape = RoundedCornerShape(16.dp),
+    ) {
+        Column(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Icon(
+                imageVector = Icons.Default.Warning,
+                contentDescription = "Error",
+                tint = MaterialTheme.colorScheme.onErrorContainer,
+                modifier = Modifier.size(32.dp),
+            )
+            Spacer(Modifier.height(12.dp))
+            Text(
+                text = "Products Error",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onErrorContainer,
+            )
+            Spacer(Modifier.height(8.dp))
+            Text(
+                text = message,
+                color = MaterialTheme.colorScheme.onErrorContainer,
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center,
+            )
+            Spacer(Modifier.height(16.dp))
+            Button(
+                onClick = onRetryClick,
+                colors =
+                    androidx.compose.material3.ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.error,
+                        contentColor = MaterialTheme.colorScheme.onError,
+                    ),
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Refresh,
+                    contentDescription = "Retry",
+                    modifier = Modifier.size(18.dp),
+                )
+                Spacer(Modifier.width(8.dp))
+                Text("Retry")
+            }
+        }
     }
 }

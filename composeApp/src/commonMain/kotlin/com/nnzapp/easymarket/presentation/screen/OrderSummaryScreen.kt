@@ -539,7 +539,6 @@ fun ConfirmOrderDialog(
         },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-
                 Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     items.forEach { item ->
                         Row(
