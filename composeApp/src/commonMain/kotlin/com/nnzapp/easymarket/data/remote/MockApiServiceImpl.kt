@@ -36,61 +36,73 @@ class MockApiServiceImpl : ApiService {
 
         return listOf(
             ProductDto(
+                id = "1",
                 name = "Fresh Apples",
                 price = 5,
                 imageUrl = "https://picsum.photos/seed/picsum/200/300",
             ),
             ProductDto(
+                id = "2",
                 name = "Organic Bananas",
                 price = 3,
                 imageUrl = "https://picsum.photos/seed/picsum/200/300",
             ),
             ProductDto(
+                id = "3",
                 name = "Fresh Oranges",
                 price = 4,
                 imageUrl = "https://picsum.photos/seed/picsum/200/300",
             ),
             ProductDto(
+                id = "4",
                 name = "Tomatoes",
                 price = 6,
                 imageUrl = "https://picsum.photos/seed/picsum/200/300",
             ),
             ProductDto(
+                id = "5",
                 name = "Broccoli",
                 price = 4,
                 imageUrl = "https://picsum.photos/seed/picsum/200/300",
             ),
             ProductDto(
+                id = "6",
                 name = "Carrots",
                 price = 3,
                 imageUrl = "https://picsum.photos/seed/picsum/200/300",
             ),
             ProductDto(
+                id = "7",
                 name = "Fresh Bread",
                 price = 4,
                 imageUrl = "https://picsum.photos/seed/picsum/200/300",
             ),
             ProductDto(
+                id = "8",
                 name = "Organic Milk",
                 price = 5,
                 imageUrl = "https://picsum.photos/seed/picsum/200/300",
             ),
             ProductDto(
+                id = "8",
                 name = "Free Range Eggs",
                 price = 6,
                 imageUrl = "https://picsum.photos/seed/picsum/200/300",
             ),
             ProductDto(
+                id = "9",
                 name = "Greek Yogurt",
                 price = 4,
                 imageUrl = "https://picsum.photos/seed/picsum/200/300",
             ),
             ProductDto(
+                id = "10",
                 name = "Strawberries",
                 price = 7,
                 imageUrl = "https://picsum.photos/seed/picsum/200/300",
             ),
             ProductDto(
+                id = "11",
                 name = "Avocados",
                 price = 8,
                 imageUrl = "https://picsum.photos/seed/picsum/200/300",

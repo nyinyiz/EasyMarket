@@ -1,5 +1,6 @@
 package com.nnzapp.easymarket.di
 
+import com.nnzapp.easymarket.data.config.ApiConfig
 import com.nnzapp.easymarket.data.remote.ApiService
 import com.nnzapp.easymarket.data.remote.ApiServiceImpl
 import com.nnzapp.easymarket.data.remote.MockApiServiceImpl
@@ -17,14 +18,12 @@ import com.nnzapp.easymarket.presentation.viewmodel.StoreViewModel
 import org.koin.compose.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-private const val USE_MOCK_API = true
-
 val appModule =
     module {
         // Networking
         single { createHttpClient() }
         single<ApiService> {
-            if (USE_MOCK_API) MockApiServiceImpl() else ApiServiceImpl(get())
+            if (ApiConfig.useMockApi) MockApiServiceImpl() else ApiServiceImpl(get())
         }
 
         // Repositories
