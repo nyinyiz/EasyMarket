@@ -1,6 +1,18 @@
 # EasyMarket
 
-A modern shopping application built with **Compose Multiplatform**, featuring a clean architecture and smooth user experience across Android, iOS, and Desktop platforms.
+A modern shopping application built with **Compose Multiplatform**, featuring a clean architecture
+and smooth user experience across Android, iOS, and Desktop platforms.
+
+## Screenshots
+
+<div align="center">
+  <img src="screenshots/ss1.png" alt="Android Screenshot 1" width="200">
+  <img src="screenshots/ss2.png" alt="Android Screenshot 2" width="200">
+  <img src="screenshots/ss3.png" alt="Android Screenshot 3" width="200">
+  <img src="screenshots/ss4.png" alt="Android Screenshot 4" width="200">
+  <img src="screenshots/ss5.png" alt="Android Screenshot 5" width="200">
+  <img src="screenshots/ss6.png" alt="Android Screenshot 6" width="200">
+</div>
 
 ## Features
 
@@ -49,9 +61,11 @@ composeApp/src/
 
 ## API Configuration
 
-> **Note**: The live API currently returns usage limit errors, so the app is configured to use mock data by default.
+> **Note**: The live API currently returns usage limit errors, so the app is configured to use mock
+> data by default.
 
 To switch between mock and live API:
+
 - Open `composeApp/src/commonMain/kotlin/com/nnzapp/easymarket/di/AppModule.kt`
 - Change `USE_MOCK_API` from `true` to `false` to use the live API
 
@@ -60,8 +74,9 @@ To switch between mock and live API:
 1. Clone the repository
 2. Open in Android Studio or IntelliJ IDEA
 3. Run the project on your preferred platform:
-   - **Android**: Run the `composeApp` configuration
-   - **iOS**: Open `iosApp/iosApp.xcodeproj` in Xcode
-   - **Desktop**: Run the `desktopRun` Gradle task
+    - **Android**: Run the `composeApp` configuration
+    - **iOS**: Open `iosApp/iosApp.xcodeproj` in Xcode
+    - **Desktop**: Run the `desktopRun` Gradle task
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)
+Learn more
+about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)
